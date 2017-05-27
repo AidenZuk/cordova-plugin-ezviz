@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-        id="com.laitron.ezviz"
+        id="com-laitron-ezviz"
         version="0.7.0">
 
-  <name>Hello</name>
+  <name>Ezviz</name>
 
   <engines>
     <engine name="cordova" version=">=3.4.0"/>
@@ -12,7 +12,7 @@
   <asset src="www/ezviz.js" target="js/ezviz.js"/>
 
   <js-module src="www/ezviz.js" name="ezviz">
-    <clobbers target="hello" />
+    <clobbers target="ezviz" />
   </js-module>
 
   <platform name="android">
