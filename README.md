@@ -1,20 +1,17 @@
-# Cordova Hello World Plugin
+# 海康萤石的phonegap/cordova 插件
 
-Simple plugin that returns your string prefixed with hello.
-
-Greeting a user with "Hello, world" is something that could be done in JavaScript. This plugin provides a simple example demonstrating how Cordova plugins work.
 
 ## Using
 
 Create a new Cordova Project
 
     $ cordova create hello com.example.helloapp Hello
-    
+
 Install the plugin
 
     $ cd hello
-    $ cordova plugin add https://github.com/don/cordova-plugin-hello.git
-    
+    $ cordova plugin add https://github.com/plotozhu/cordova-plugin-ezviz.git
+
 
 Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 
@@ -34,10 +31,10 @@ Install iOS or Android platform
 
     cordova platform add ios
     cordova platform add android
-    
+
 Run the code
 
-    cordova run 
+    cordova run
 
 ## More Info
 

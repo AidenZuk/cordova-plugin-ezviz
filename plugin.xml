@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-        id="com.example.hello"
+        id="com.laitron.ezviz"
         version="0.7.0">
 
   <name>Hello</name>
@@ -9,33 +9,33 @@
     <engine name="cordova" version=">=3.4.0"/>
   </engines>
 
-  <asset src="www/hello.js" target="js/hello.js"/>
+  <asset src="www/ezviz.js" target="js/ezviz.js"/>
 
-  <js-module src="www/hello.js" name="hello">
+  <js-module src="www/ezviz.js" name="ezviz">
     <clobbers target="hello" />
   </js-module>
 
   <platform name="android">
 
     <config-file target="res/xml/config.xml" parent="/*">
-      <feature name="Hello">
-        <param name="android-package" value="com.example.plugin.Hello"/>
+      <feature name="ezviz">
+        <param name="android-package" value="com.laitron.ezviz"/>
       </feature>
     </config-file>
 
-    <source-file src="src/android/Hello.java" target-dir="src/com/example/plugin/"/>
+    <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
   </platform>
 
   <platform name="ios">
     
     <config-file target="config.xml" parent="/widget">
-      <feature name="Hello">
-        <param name="ios-package" value="HWPHello" />
+      <feature name="ezviz">
+        <param name="ios-package" value="LTEzviz" />
       </feature>
     </config-file>
 
-    <header-file src="src/ios/HWPHello.h" target-dir="HelloPlugin"/>
-    <source-file src="src/ios/HWPHello.m" target-dir="HelloPlugin"/>
+    <header-file src="src/ios/ezviz.h" target-dir="EzvizPlugin"/>
+    <source-file src="src/ios/ezivz.m" target-dir="EzvizPlugin"/>
   </platform>
 
   <platform name="wp7">
