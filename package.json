@@ -1,0 +1,24 @@
+{
+  "name": "cordova-plugin-ezviz",
+  "version": "1.0.0",
+  "description": "cordova plugin for hikvision",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plotozhu/cordova-plugin-ezviz.git"
+  },
+  "keywords": [
+    "cordova",
+    "plugin",
+    "ezviz"
+  ],
+  "author": "ploto.zhu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plotozhu/cordova-plugin-ezviz/issues"
+  },
+  "homepage": "https://github.com/plotozhu/cordova-plugin-ezviz#readme"
+}
