@@ -21,6 +21,9 @@
       <feature name="ezviz">
         <param name="android-package" value="com.laitron.ezviz"/>
       </feature>
+
+    </config-file>
+<config-file target="AndroidManifest.xml" parent="/manifest">
 <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
@@ -128,8 +131,7 @@
             android:name="com.videogo.devicemgt.EZUpgradeDeviceActivity"
             android:label="@string/title_activity_ezupgrade_device">
         </activity>
-    </config-file>
-
+</config-file>
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
     <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
 	<source-file src="libs/ezvizsdk.jar" target-dir="libs" framework="true" />
