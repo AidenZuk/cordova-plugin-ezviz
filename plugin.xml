@@ -132,7 +132,7 @@
 
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
     <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
-	<source-file src="libs/ezvzsdk.jar" target-dir="libs" framework="true" />
+	<source-file src="libs/ezvizsdk.jar" target-dir="libs" framework="true" />
       <source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" />
   </platform>
 
