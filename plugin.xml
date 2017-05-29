@@ -24,7 +24,7 @@
     </config-file>
 
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
-    <framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference">
+    <framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" />
   
   </platform>
 
