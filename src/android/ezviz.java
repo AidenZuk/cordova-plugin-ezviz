@@ -1,4 +1,4 @@
-package com.laitron.plugin;
+package com.laitron.ezviz;
 
 import android.content.Intent;
 
