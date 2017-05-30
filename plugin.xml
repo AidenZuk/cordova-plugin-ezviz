@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+    <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.laitron.ezviz"
         version="0.7.0">
@@ -23,8 +23,8 @@
       </feature>
 
     </config-file>
-<config-file target="AndroidManifest.xml" parent="/manifest">
-<uses-permission android:name="android.permission.INTERNET"/>
+<config-file target="AndroidManifest.xml" parent="/*">
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -132,6 +132,10 @@
             android:label="@string/title_activity_ezupgrade_device">
         </activity>
 </config-file>
+<config-file target="AndroidManifest.xml" parent="/manifest/application">
+   <!--SDK4.2及之后需要在Mainfest.xml设置Accesskey，且必须正确设置，在application标签中加入-->
+   <meta-data android:name="com.videogo.ezviz.API_KEY" android:value="$API_KEY" />
+</config-file>
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
     <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
 	<source-file src="libs/ezvizsdk.jar" target-dir="libs" framework="true" />
@@ -139,7 +143,7 @@
   </platform>
 
   <platform name="ios">
-    
+
     <config-file target="config.xml" parent="/widget">
       <feature name="ezviz">
         <param name="ios-package" value="LTEzviz" />
