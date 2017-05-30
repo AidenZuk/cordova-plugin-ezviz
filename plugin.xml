@@ -138,7 +138,7 @@
         </activity>
 </config-file>
 <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-    <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
+    <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/ezviz/"/>
     <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
       <resource-file src="libs/ezvizsdk.aar" target="libs/ezvizsdk.aar" />
       <!-- source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" / -->
