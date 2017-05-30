@@ -6,7 +6,7 @@ repositories{
 }
 
 dependencies {
-   compile(name:'foo', ext:'aar')
+   compile(name:'ezvizsdk', ext:'aar')
 }
 
 android {

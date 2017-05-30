@@ -1,4 +1,4 @@
-cordova.define("com.laitron.plugin.ezviz", function(require, exports, module) {
+
 /*global cordova, module*/
 
 module.exports = {
@@ -23,4 +23,4 @@ module.exports = {
             }
 };
 
-});
+

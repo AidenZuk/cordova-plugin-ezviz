@@ -13,6 +13,11 @@ Install the plugin
     $ cordova plugin add https://github.com/plotozhu/cordova-plugin-ezviz.git
 
 
+I have embedded ezviz sdk's demo as the ui activities. the source and gradle file are included in ezsdk.
+
+apis:
+   listcamera: 
+
 Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 
 ```js
