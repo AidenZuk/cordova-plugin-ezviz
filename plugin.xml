@@ -63,6 +63,11 @@
 
 
 
+</config-file>
+<config-file target="AndroidManifest.xml" parent="/manifest/application">
+   <!--SDK4.2及之后需要在Mainfest.xml设置Accesskey，且必须正确设置，在application标签中加入-->
+   <meta-data android:name="com.videogo.ezviz.APP_KEY" android:value="$APP_KEY" />
+
         <activity
             android:name="com.videogo.main.EzvizWebViewActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -131,10 +136,6 @@
             android:name="com.videogo.devicemgt.EZUpgradeDeviceActivity"
             android:label="@string/title_activity_ezupgrade_device">
         </activity>
-</config-file>
-<config-file target="AndroidManifest.xml" parent="/manifest/application">
-   <!--SDK4.2及之后需要在Mainfest.xml设置Accesskey，且必须正确设置，在application标签中加入-->
-   <meta-data android:name="com.videogo.ezviz.APP_KEY" android:value="$APP_KEY" />
 </config-file>
 <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
