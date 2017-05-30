@@ -41,3 +41,5 @@ Run the code
 For more information on setting up Cordova see [the documentation](http://cordova.apache.org/docs/en/latest/guide/cli/index.html)
 
 For more info on plugins see the [Plugin Development Guide](http://cordova.apache.org/docs/en/latest/guide/hybrid/plugins/index.html)
+
+For more info on how to add AAR file to cordova plugin, see [android - Cordova plugin development - adding aar - Stack Overflow](https://stackoverflow.com/questions/30757208/cordova-plugin-development-adding-aar)
