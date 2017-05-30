@@ -136,9 +136,10 @@
    <!--SDK4.2及之后需要在Mainfest.xml设置Accesskey，且必须正确设置，在application标签中加入-->
    <meta-data android:name="com.videogo.ezviz.API_KEY" android:value="$API_KEY" />
 </config-file>
+<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/plugin/"/>
     <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
-	<source-file src="libs/ezvizsdk.jar" target-dir="libs" framework="true" />
+      <resource-file src="libs/ezvizsdk.aar" target="libs/ezvizsdk.aar" />
       <source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" />
   </platform>
 
