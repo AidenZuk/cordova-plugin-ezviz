@@ -17,7 +17,7 @@ import com.videogo.openapi.EZOpenSDK;
 import com.videogo.ui.util.EZUtils;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.util.LogUtil;
-import com.videogo.data.ExtraInfo;
+
 
 import android.content.IntentFilter;
 import android.app.Activity;
