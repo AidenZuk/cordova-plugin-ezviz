@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ezsdk.iml" filepath="$PROJECT_DIR$/ezsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ezviz/ezviz.iml" filepath="$PROJECT_DIR$/ezviz/ezviz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ezvizsdk/ezvizsdk.iml" filepath="$PROJECT_DIR$/ezvizsdk/ezvizsdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ezvizsdk/ezvizsdk.iml" filepath="$PROJECT_DIR$/ezvizsdk/ezvizsdk.iml" />
+    </modules>
+  </component>
+</project>

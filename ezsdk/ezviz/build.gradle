@@ -1,0 +1,76 @@
+
+apply plugin: 'com.android.library'
+
+android {
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    compileSdkVersion 23
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions{
+
+        exclude'META-INF/DEPENDENCIES.txt'
+
+        exclude'META-INF/LICENSE.txt'
+
+        exclude'META-INF/NOTICE.txt'
+
+        exclude'META-INF/NOTICE'
+
+        exclude'META-INF/LICENSE'
+
+        exclude'META-INF/DEPENDENCIES'
+
+        exclude'META-INF/notice.txt'
+
+        exclude'META-INF/license.txt'
+
+        exclude'META-INF/dependencies.txt'
+
+        exclude'META-INF/LGPL2.1'
+
+        exclude "assets/comm_title.9.png"
+        exclude "assets/comm_title_back.png"
+        exclude "assets/comm_title_back2.png"
+        exclude "assets/comm_title_back_dark.png"
+        exclude "assets/comm_title_back_sel.png"
+        exclude "assets/comm_title_back_sel2.png"
+        exclude "assets/comm_title_refresh.png"
+        exclude "assets/default_figure.png"
+        exclude "assets/tittel_button_bg.9.png"
+        exclude "assets/tittel_button_press_bg.9.png"
+
+    }
+
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    //    compile project(':opensdk')
+}
+
