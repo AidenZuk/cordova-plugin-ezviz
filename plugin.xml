@@ -19,7 +19,7 @@
 
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="ezviz">
-        <param name="android-package" value="com.laitron.ezviz"/>
+        <param name="android-package" value="com.laitron.ezviz.ezviz"/>
       </feature>
 
     </config-file>
