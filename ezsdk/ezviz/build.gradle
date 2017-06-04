@@ -23,6 +23,8 @@ android {
         ndk {
             abiFilters "armeabi-v7a"
         }
+        // Enabling multidex support.
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -73,5 +75,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     //    compile project(':opensdk')
     compile files('libs/EZOpenSDK.jar')
+    compile 'com.google.zxing:core:3.2.0'
 }
 
