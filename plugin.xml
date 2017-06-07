@@ -17,6 +17,7 @@
 
   <platform name="android">
 	<preference name="APP_KEY"/>
+      <preference name="PKG_NAME" default="com.usky.smarthome" />
 	<config-file target="./res/values/strings.xml" parent="/resources">
 	    <string name="appkey">$APP_KEY</string>
 	</config-file>
@@ -65,7 +66,13 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
 
-
+    <permission
+            android:name=""$PKG_NAME.permission.C2D_MESSAGE"
+            android:protectionLevel="signature"/>
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission android:name="$PKG_NAME.permission.RECEIVE"/>
+    <!-- Creates a custom permission so only this app can receive its messages. NOTE: APP_PACKAGE.permission.C2D_MESSAGE -->
+    <uses-permission android:name="$PKG_NAME.permission.C2D_MESSAGE"/>
 
 </config-file>
 <config-file target="AndroidManifest.xml" parent="/manifest/application">
