@@ -16,7 +16,10 @@
   </js-module>
 
   <platform name="android">
-	<preference name="APPKEY"/>
+	<preference name="APP_KEY"/>
+	<config-file target="./res/values/strings.xml" parent="/resources">
+	    <string name="appkey">$APP_KEY</string>
+	</config-file>
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="ezviz">
         <param name="android-package" value="com.laitron.ezviz.ezviz"/>
@@ -146,16 +149,14 @@
   </platform>
 
   <platform name="ios">
-      <preference name="APPKEY" />
+      <preference name="APP_KEY" />
     <config-file target="config.xml" parent="/widget">
       <feature name="ezviz">
         <param name="ios-package" value="LTEzviz" />
       </feature>
 
     </config-file>
-	<config-file target="./res/values/strings.xml" parent="/resources">
-	    <string name="appkey">$APPKEY</string>
-	</config-file>
+
     <header-file src="src/ios/ezviz.h" target-dir="EzvizPlugin"/>
     <source-file src="src/ios/ezivz.m" target-dir="EzvizPlugin"/>
   </platform>
