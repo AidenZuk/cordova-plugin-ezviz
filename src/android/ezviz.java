@@ -143,10 +143,11 @@ public class ezviz extends CordovaPlugin {
              */
             EZOpenSDK.enableP2P(true);
 
-            /**
+            /**呆
              * APP_KEY请替换成自己申请的
              */
-            EZOpenSDK.initLib(this.cordova.getActivity().getApplication(), this.cordova.getActivity().getIntent().getStringExtra("APPKEY"), "");
+            LogUtil.debugLog("smarthome-list:",this.preferences.getString("APPKEY",""));
+            EZOpenSDK.initLib(this.cordova.getActivity().getApplication(),this.preferences.getString("APPKEY",""), "");
 
     }
     public void showCameraList(){
