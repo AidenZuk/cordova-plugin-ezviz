@@ -153,7 +153,9 @@
       </feature>
 
     </config-file>
-
+	<config-file target="./res/values/strings.xml" parent="/resources">
+	    <string name="appkey">$APPKEY</string>
+	</config-file>
     <header-file src="src/ios/ezviz.h" target-dir="EzvizPlugin"/>
     <source-file src="src/ios/ezivz.m" target-dir="EzvizPlugin"/>
   </platform>
