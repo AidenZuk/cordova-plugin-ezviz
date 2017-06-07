@@ -27,7 +27,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 public class ezviz extends CordovaPlugin {
-    public static String AppKey = "ec8223fe65fc42be8e142ecf0c721139";
+
     public String accessToken = "";
     public String telNo = "";
 
@@ -146,7 +146,7 @@ public class ezviz extends CordovaPlugin {
             /**
              * APP_KEY请替换成自己申请的
              */
-            EZOpenSDK.initLib(this.cordova.getActivity().getApplication(), AppKey, "");
+            EZOpenSDK.initLib(this.cordova.getActivity().getApplication(), this.cordova.getActivity().getIntent().getStringExtra("APPKEY"), "");
 
     }
     public void showCameraList(){

@@ -10,7 +10,7 @@ Create a new Cordova Project
 Install the plugin
 
     $ cd hello
-    $ cordova plugin add https://github.com/plotozhu/cordova-plugin-ezviz.git
+    $ cordova plugin add https://github.com/plotozhu/cordova-plugin-ezviz.git --variable APPKEY="YOUR APPKEY FROM open.ys7.com"
 
 
 I have embedded ezviz sdk's demo as the ui activities. the source and gradle file are included in ezsdk.
