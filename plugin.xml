@@ -67,7 +67,7 @@
 
 
     <permission
-            android:name=""$PKG_NAME.permission.C2D_MESSAGE"
+            android:name="$PKG_NAME.permission.C2D_MESSAGE"
             android:protectionLevel="signature"/>
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="$PKG_NAME.permission.RECEIVE"/>
