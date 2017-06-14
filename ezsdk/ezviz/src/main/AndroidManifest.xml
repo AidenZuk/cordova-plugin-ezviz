@@ -59,7 +59,7 @@
     <activity
         android:name="com.videogo.ui.realplay.EZRealPlayActivity"
         android:configChanges="orientation|keyboardHidden|screenSize"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" android:launchMode="singleInstance"/>
     <activity
         android:name="com.videogo.ui.message.EZMessageImageActivity2"
         android:screenOrientation="portrait">

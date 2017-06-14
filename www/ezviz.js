@@ -1,26 +1,36 @@
+cordova.define("cordova-plugin-ezviz.ezviz", function(require, exports, module) {
 
-/*global cordova, module*/
+    /*global cordova, module*/
 
-module.exports = {
-    greet: function (name, successCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "Hello", "greet", [name]);
-    },
-        init:function(accessToken,telNo){
+    module.exports = {
+        greet: function (name, successCallback, errorCallback) {
+            cordova.exec(successCallback, errorCallback, "Hello", "greet", [name]);
+        },
+        init:function(accessToken){
 
-               cordova.exec(function(){}, function(error){
-                                                             console.log('list camera error:',error);
-                                                         }, "ezviz", "init", [accessToken,telNo]);
+            cordova.exec(function(){},
+                function(error){
+                    console.log('list camera error:',error);
+                },
+                "ezviz",
+                "init",
+                [accessToken]);
+
         },
         listCamera:function(successCallback,errorCallback){
             cordova.exec(function(){}, function(error){
                 console.log('list camera error:',error);
             }, "ezviz", "listCamera", []);
         },
-            preview:function(deviceSerial,cameraIndex,successCallback,errorCallback){
-                cordova.exec(function(){}, function(error){
-                                                           console.log('list camera error:',error);
-                                                       }, "ezviz", "preview", [deviceSerial,cameraIndex || 0,"开门","openDoorABCD"]);
-            }
-};
+        preview:function(accessToken,deviceSerial,cameraIndex,eventName,doorCaption,lightCaption,successCallback,errorCallback){
+            cordova.exec(successCallback || function(){},
+                errorCallback || function(error){   console.log('open camera error:',error);},
+                "ezviz",
+                "preview",
+                [accessToken||"",deviceSerial,cameraIndex || 0,eventName,doorCaption || "",lightCaption || ""]);
+        }
+    };
 
 
+
+});

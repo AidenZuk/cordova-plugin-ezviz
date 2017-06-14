@@ -92,6 +92,7 @@
     <string name="message_come_from_tip">来自：</string>
     <string name="message_video">消息录像</string>
     <string name="message_live">现场直播</string>
+    <string name="light_ctrl">灯控</string>
     <string name="alarm_type_remotecontrol">发生紧急遥控按钮事件</string>
     <string name="alarm_type_infrared">发生人体感应事件</string>
     <string name="alarm_type_door">发生门磁报警</string>

@@ -47,13 +47,14 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_marginLeft="25dp"
-		    android:orientation="vertical" >				
-		    <ImageButton
-		        android:id="@+id/realplay_spec_btn"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:background="@drawable/action"
-		        android:onClick="onClick"
+		    android:orientation="vertical" >
+
+			<ImageButton
+				android:id="@+id/realplay_spec_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@drawable/action"
+				android:onClick="onClick"
 				android:scaleType="matrix" />
 		   <TextView
 			   android:id="@+id/realplay_spec_btn_txt"
@@ -176,7 +177,41 @@
 		       android:textColor="@color/common_sub_text"
 		       android:textSize="@dimen/realplay_text_size" />		    
 		</LinearLayout>
-		
+		<LinearLayout
+			android:id="@+id/realplay_video_container_light_ly"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="25dp"
+			android:orientation="vertical" >
+			<FrameLayout
+				android:id="@+id/realplay_video_container_light"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" >
+
+				<ImageButton
+					android:id="@+id/realplay_light_btn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/lightbulb_icon"
+					android:onClick="onClick" />
+
+				<ImageButton
+					android:id="@+id/realplay_light_off_btn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:background="@drawable/lightbulb_icon"
+					android:onClick="onClick"
+					android:visibility="gone" />
+			</FrameLayout>
+			<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="7dp"
+			android:text="@string/light_ctrl"
+			android:layout_gravity="center"
+			android:textColor="@color/common_sub_text"
+			android:textSize="@dimen/realplay_text_size" />
+		</LinearLayout>
 		<LinearLayout 
 		    android:id="@+id/realplay_video_container_ly"
 		    android:layout_width="wrap_content"

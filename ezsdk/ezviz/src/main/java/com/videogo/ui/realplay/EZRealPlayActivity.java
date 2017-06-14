@@ -210,6 +210,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
     private int mControlDisplaySec = 0;
 
     private String dispCaption ;
+    private String lightCaption ;
     private String eventName;
     // 播放比例
     private float mPlayScale = 1;
@@ -468,7 +469,10 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             mEZPlayer.release();
 
         }
+        if(!eventName.equals("")){
+            this.SendEvent("close","");
 
+        }
         mHandler.removeMessages(MSG_AUTO_START_PLAY);
         mHandler.removeMessages(MSG_HIDE_PTZ_DIRECTION);
         mHandler.removeMessages(MSG_CLOSE_PTZ_PROMPT);
@@ -558,6 +562,10 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             dispCaption = myBundle.getString("com.laitron.ezviz.action_on_preview");
             if(dispCaption == null){
                 dispCaption = "";
+            }
+            lightCaption = myBundle.getString("com.laitron.ezviz.light_on_preview");
+            if(lightCaption == null){
+                lightCaption = "";
             }
 
             eventName =  myBundle.getString("com.laitron.ezviz.evt_on_preview");
@@ -1077,19 +1085,32 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
             layout.setVisibility(View.GONE);
         }else{
             layout.setVisibility(View.VISIBLE);
-            if(!eventName.equals("")){
-                final Intent intent = new Intent(eventName);
-                Bundle b = new Bundle();
-                b.putString( "userdata", "{ data: 'clicked'}" );
-                intent.putExtras( b);
-                LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
-            }
 
+
+        }
+        LinearLayout light_layout = (LinearLayout)findViewById(R.id.realplay_video_container_light_ly);
+        if(lightCaption.equals( "")){
+
+            light_layout.setVisibility(View.GONE);
+        }else{
+            light_layout.setVisibility(View.VISIBLE);
+
+        }
+        if(!eventName.equals("")){
+            LogUtil.debugLog(TAG, "setEvent"+eventName);
         }
         mRealPlayTalkBtn.setEnabled(false);
         mRealPlayOperateBar.setVisibility(View.VISIBLE);
     }
 
+    private void SendEvent(String evtData,String source){
+        LogUtil.debugLog(TAG, "event Name:" + eventName + " :"+evtData+" ."+ source);
+        final Intent intent = new Intent(eventName);
+        Bundle b = new Bundle();
+        b.putString( "userdata", "{ \"data\": \""+evtData+"\",\"source\":\""+source+"\"}" );
+        intent.putExtras( b);
+        LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
+    }
     private void setBigScreenOperateBtnLayout() {
 
     }
@@ -1392,6 +1413,10 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         } else if (viewId == R.id.realplay_full_talk_anim_btn) {
             closeTalkPopupWindow(true, true);
 
+        } else if (viewId == R.id.realplay_spec_btn){
+            this.SendEvent("click","0");
+        }else if (viewId == R.id.realplay_light_btn){
+            this.SendEvent("click","1");
         }
     }
 
