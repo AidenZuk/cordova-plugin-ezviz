@@ -34,8 +34,8 @@ public class ezviz extends CordovaPlugin {
     //第一个参数为请求码，即调用startActivityForResult()传递过去的值
    //第二个参数为结果码，结果码用于标识返回数据来自哪个新Activity
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    String result =data.getExtras().getString(“result”));//得到新Activity关闭后返回的数据
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    String result =data.getExtras().getString("result");//得到新Activity关闭后返回的数据
     if(requestCode == 100){
       //前面的 Activity退出了
     }
