@@ -16,11 +16,11 @@
   </js-module>
 
   <platform name="android">
-	<preference name="APP_KEY"/>
+    <preference name="APP_KEY"/>
       <preference name="PKG_NAME" default="com.usky.smarthome" />
-	<config-file target="./res/values/strings.xml" parent="/resources">
-	    <string name="appkey">$APP_KEY</string>
-	</config-file>
+    <config-file target="./res/values/strings.xml" parent="/resources">
+        <string name="appkey">$APP_KEY</string>
+    </config-file>
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="ezviz">
         <param name="android-package" value="com.laitron.ezviz.ezviz"/>
@@ -155,18 +155,56 @@
       <!-- source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" / -->
   </platform>
 
-  <platform name="ios">
-      <preference name="APP_KEY" />
-    <config-file target="config.xml" parent="/widget">
-      <feature name="ezviz">
-        <param name="ios-package" value="LTEzviz" />
-      </feature>
-
-    </config-file>
-
-    <header-file src="src/ios/ezviz.h" target-dir="EzvizPlugin"/>
-    <source-file src="src/ios/ezivz.m" target-dir="EzvizPlugin"/>
-  </platform>
+    <!-- ios配置区域 -->
+    <platform name="ios">
+        <preference name="APP_KEY" />
+        <!-- ios Info.plist文件配置 -->
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleURLName</key>
+                    <string>ys7_appkey</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$APP_KEY</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+            <string>需要使用手机照相机</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
+            <string>需要使用手机麦克风</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>需要使用手机相册</string>
+        </config-file>
+        <!-- -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="ezviz">
+                <param name="ios-package" value="Ezviz" />
+            </feature>
+        </config-file>
+        <!-- ios .h文件 -->
+        <header-file src="src/ios/Ezviz.h"/>
+        <!-- ios .m文件 -->
+        <source-file src="src/ios/Ezviz.m"/>
+        <!-- ios framework配置 -->
+        <framework src="libiconv.2.4.0.tbd" />
+        <framework src="libstdc++.6.0.9.tbd" />
+        <framework src="libc++.tbd" />
+        <framework src="AVFoundation.framework" />
+        <framework src="OpenAL.framework" />
+        <framework src="CoreMedia.framework" />
+        <framework src="GLKit.framework" />
+        <framework src="AudioToolbox.framework" />
+        <framework src="VideoToolbox.framework" />
+        <framework src="MobileCoreServices.framework" />
+        <framework src="SystemConfiguration.framework" />
+        <framework src="libs/EZDemoSDK.framework" custom="true"/>
+        <resource-file src="libs/EZDemoSDKResources.bundle" target="EZDemoSDKResources.bundle" />
+    </platform>
 
   <platform name="wp7">
     <source-file src="src/wp7/Hello.cs"/>
