@@ -19,7 +19,7 @@
 {
     [super pluginInitialize];
     //sdk日志开关，正式发布需要去掉
-//    [EZOpenSDK setDebugLogEnable:YES];
+    //    [EZOpenSDK setDebugLogEnable:YES];
     //设置是否支持P2P取流,详见api
     [EZOpenSDK enableP2P:YES];
     //APP_KEY请替换成自己申请的
@@ -38,7 +38,7 @@
 {
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
-
+    
     [self execCallback:msg command:command];
 }
 
@@ -54,8 +54,8 @@
     NSArray* data = [command arguments];
     NSString* accessToken = [data objectAtIndex:0];
     NSString* deviceSerial = [data objectAtIndex:1];
-    id camera_index = [data objectAtIndex:2];
-
+    NSString* camera_index = [data objectAtIndex:2];
+    
     if(![accessToken  isEqual: @""]) {
         [EZOpenSDK setAccessToken:accessToken];
         [EZOpenSDK getDeviceInfo:deviceSerial completion: ^(EZDeviceInfo *deviceInfo, NSError *error) {
@@ -63,10 +63,11 @@
                 EZLivePlayViewController *livePlay = [[UIStoryboard storyboardWithName:@"EZMain" bundle:[self getBundle]] instantiateViewControllerWithIdentifier:@"EZLivePlayViewController"];
                 livePlay.delegate = self;
                 livePlay.deviceInfo = deviceInfo;
+                livePlay.cameraIndex = [camera_index intValue];
                 livePlay.eventName = (data.count >= 4) ? [data objectAtIndex:3] : @"";
                 livePlay.caption = (data.count >= 5) ? [data objectAtIndex:4] : @"";
                 livePlay.lightCaption = (data.count >= 6) ? [data objectAtIndex:5] : @"";
-
+                
                 [self.viewController.navigationController pushViewController:livePlay animated:true];
                 [self execCallback:@"" command:command];
             }else{
@@ -91,7 +92,7 @@
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
                                messageAsString:msg];
-
+    
     [self.commandDelegate sendPluginResult:result
                                 callbackId:command.callbackId];
 }
