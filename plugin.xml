@@ -151,7 +151,7 @@
 <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/ezviz/"/>
     <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
-      <resource-file src="libs/ezvizsdk.aar" target="libs/ezvizsdk.aar" />
+      <resource-file src="libs/android/ezvizsdk.aar" target="libs/ezvizsdk.aar" />
       <!-- source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" / -->
   </platform>
 
@@ -191,6 +191,7 @@
         <!-- ios .m文件 -->
         <source-file src="src/ios/Ezviz.m"/>
         <!-- ios framework配置 -->
+        <framework src="libbz2.tbd" />
         <framework src="libiconv.2.4.0.tbd" />
         <framework src="libstdc++.6.0.9.tbd" />
         <framework src="libc++.tbd" />
@@ -202,8 +203,12 @@
         <framework src="VideoToolbox.framework" />
         <framework src="MobileCoreServices.framework" />
         <framework src="SystemConfiguration.framework" />
-        <framework src="libs/EZDemoSDK.framework" custom="true"/>
-        <resource-file src="libs/EZDemoSDKResources.bundle" target="EZDemoSDKResources.bundle" />
+        <framework src="libs/ios/EZDemoSDK.framework" custom="true"/>
+        <resource-file src="libs/ios/EZDemoSDK.framework/Base.lproj" target="AddDevice.storyboardc" />
+        <resource-file src="libs/ios/EZDemoSDK.framework/Base.lproj" target="EZMain.storyboardc"/>
+        <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="Localizable.strings"/>
+        <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="AddDevice.strings"/>
+        <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="EZMain.strings"/>
     </platform>
 
   <platform name="wp7">
