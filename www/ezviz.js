@@ -1,7 +1,7 @@
 /*global cordova, module*/
 
 module.exports = {
-        greet: function (name, successCallback, errorCallback) {
+    greet: function (name, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "ezviz", "greet", [name]);
     },
     init:function(accessToken){
@@ -24,5 +24,8 @@ module.exports = {
             "ezviz",
             "preview",
             [accessToken||"",deviceSerial,cameraIndex || 0,eventName || "",doorCaption || "",lightCaption || ""]);
+    },
+    openAddDevice: function (accessToken, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ezviz", "openAddDevice", [accessToken || ""]);
     }
 };
