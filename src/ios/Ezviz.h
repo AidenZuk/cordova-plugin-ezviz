@@ -15,6 +15,7 @@
 - (void) listCamera:(CDVInvokedUrlCommand*)command;
 - (void) preview:(CDVInvokedUrlCommand*)command;
 - (void) init:(CDVInvokedUrlCommand*)command;
+- (void) openAddDevice:(CDVInvokedUrlCommand*)command;
 
 @property (nonatomic, strong) NSString *accessToken;
 @property (nonatomic, strong) NSString *telNo;
