@@ -1,6 +1,12 @@
 package com.laitron.ezviz;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
@@ -13,60 +19,54 @@ import com.videogo.exception.InnerException;
 import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.ui.cameralist.EZCameraListActivity;
 import com.videogo.ui.realplay.EZRealPlayActivity;
+import com.videogo.ui.devicelist.AutoWifiNetConfigActivity;
+import com.videogo.scan.main.CaptureActivity;
 import com.videogo.openapi.EZOpenSDK;
 import com.videogo.ui.util.EZUtils;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.util.LogUtil;
 
-
-import android.content.IntentFilter;
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
 public class ezviz extends CordovaPlugin {
 
-    public String accessToken = "";
+    public String accessToken = "";//用户token，用于调用EZOpenSDK的api接口
     public String telNo = "";
     public String eventName = "";
+
     //第一个参数为请求码，即调用startActivityForResult()传递过去的值
-   //第二个参数为结果码，结果码用于标识返回数据来自哪个新Activity
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    String result =data.getExtras().getString("result");//得到新Activity关闭后返回的数据
-    if(requestCode == 100){
-      //前面的 Activity退出了
+    //第二个参数为结果码，结果码用于标识返回数据来自哪个新Activity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String result =data.getExtras().getString("result");//得到新Activity关闭后返回的数据
+        if(requestCode == 100){
+        //前面的 Activity退出了
+        }
     }
-   }
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("greet")) {
-
             String name = data.getString(0);
             String message = "Hello, " + name;
+
             callbackContext.success(message);
-
             return true;
-
         } else if(action.equals("listCamera")){
             Intent toIntent = new Intent(cordova.getActivity(), EZCameraListActivity.class);
             toIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             cordova.getActivity().startActivity(toIntent);
-            callbackContext.success("");
 
+            callbackContext.success("");
             return true;
         }else if(action.equals("preview")){
             //[accessToken,deviceSerial,camera_index,,eventName,openDoorCaption,openLightCaption]
             String accessToken = data.getString(0);
             String deviceSerial = data.getString(1);
-            int camera_index = data.getInt(2) ;
+            int camera_index = data.getInt(2);
             try{
-                if(!accessToken.equals(""))
+                if(!accessToken.equals("")) {
                     EZOpenSDK.getInstance().setAccessToken(accessToken);
+                }
                 EZDeviceInfo deviceInfo = EZOpenSDK.getInstance().getDeviceInfo( deviceSerial);
                 Intent toIntent = new Intent(cordova.getActivity(), EZRealPlayActivity.class);
                 EZCameraInfo cameraInfo = null;
@@ -80,32 +80,25 @@ public class ezviz extends CordovaPlugin {
                     toIntent.putExtra(IntentConsts.EXTRA_CAMERA_INFO, cameraInfo);
                     toIntent.putExtra(IntentConsts.EXTRA_DEVICE_INFO, deviceInfo);
                     String caption,lightCaption;
+
                     //应该用bundle的，不改了
                     if(data.length() >= 4) {
-
                         eventName = data.getString(3);
-
                     }else{
                         eventName = "";
                     }
+
                     if(data.length() >= 5){
-
                         caption = data.getString(4);
-
-
                     }else{
                         caption = "";
                     }
+
                     if(data.length() >= 6) {
-
                         lightCaption = data.getString(5);
-
                     }else{
                         lightCaption = "";
                     }
-
-
-
 
                     Bundle extraInfo = new Bundle();
                     extraInfo.putParcelable(IntentConsts.EXTRA_CAMERA_INFO,cameraInfo);
@@ -115,10 +108,8 @@ public class ezviz extends CordovaPlugin {
                     extraInfo.putString("com.laitron.ezviz.light_on_preview",lightCaption);
                     toIntent.putExtras(extraInfo);
                     cordova.getActivity().startActivityForResult(toIntent, 100);
-                    //toIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // cordova.getActivity().startActivity(toIntent);
-                    callbackContext.success("");
 
+                    callbackContext.success("");
                     return true;
                 }
             } catch (BaseException e) {
@@ -127,6 +118,7 @@ public class ezviz extends CordovaPlugin {
                 ErrorInfo errorInfo = (ErrorInfo) e.getObject();
 
                 LogUtil.debugLog("ezviz", errorInfo.toString());
+
                 callbackContext.error(errorInfo.toString());
                 return false;
             }
@@ -135,31 +127,45 @@ public class ezviz extends CordovaPlugin {
             accessToken=data.getString(0);
             telNo = data.getString(1);
             EZOpenSDK.getInstance().setAccessToken(accessToken);
-            callbackContext.success("");
 
+            callbackContext.success("");
+            return true;
+        }else if(action.equals("openAddDevice")) { //添加设备
+            String accessToken = data.getString(0);
+            if(!accessToken.equals("")) {
+                EZOpenSDK.getInstance().setAccessToken(accessToken);
+            }
+
+            Intent intent = new Intent(cordova.getActivity(), CaptureActivity.class);
+            startActivity(intent);
+
+            callbackContext.success("");
             return true;
         }else {
-
             return false;
-
         }
     }
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-
-
-        // your init code here
         initSDK();
+
+        //注册广播接收器
+        localBroadcastManager = LocalBroadcastManager.getInstance(this) ;
+        broadcastReceiver = new MyBroadcastReceiver() ;
+        intentFilter = new IntentFilter( "completionButtonClicked") ;
+        localBroadcastManager.registerReceiver( broadcastReceiver , intentFilter );
     }
+
+    /**
+     * EZOpenSDK初始化
+     */
     private void initSDK() {
-
-
         /**
          * sdk日志开关，正式发布需要去掉
          */
-        EZOpenSDK.showSDKLog(true);
+        EZOpenSDK.showSDKLog(false);
 
         /**
          * 设置是否支持P2P取流,详见api
@@ -171,16 +177,32 @@ public class ezviz extends CordovaPlugin {
          */
         LogUtil.debugLog("smarthome-list:",this.preferences.getString("APPKEY",""));
         EZOpenSDK.initLib(this.cordova.getActivity().getApplication(),this.preferences.getString("APPKEY",""), "");
-
-    }
-    public void showCameraList(){
-
     }
 
-    public void showReplay(String deviceSerial){
+    /**
+     * 监听通知
+     */
+    private class MyBroadcastReceiver extends BroadcastReceiver {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction() ;
+            if ( action.equals("completionButtonClicked") ){
+
+                final Intent intent = new Intent("completeDevice");
+
+                Bundle b = new Bundle();
+                b.putString( "data", intent.getStringExtra( "data" ) );
+                intent.putExtras(b);
+
+                LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
+
+                Intent intent = new Intent(this, this.cordova.getActivity());
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+                Log.d( "tttt 消息：" + intent.getStringExtra( "data" )  , "线程： " + Thread.currentThread().getName() ) ;
+            }
+        }
     }
-
-
-
 }
