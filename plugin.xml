@@ -1,159 +1,144 @@
-    <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="cordova-plugin-ezviz"
         version="0.7.0">
 
-  <name>Ezviz</name>
+    <name>Ezviz</name>
 
-  <engines>
-    <engine name="cordova" version=">=3.4.0"/>
-  </engines>
+    <engines>
+        <engine name="cordova" version=">=3.4.0"/>
+    </engines>
 
-  <asset src="www/ezviz.js" target="js/ezviz.js"/>
+    <asset src="www/ezviz.js" target="js/ezviz.js"/>
 
-  <js-module src="www/ezviz.js" name="ezviz">
-    <clobbers target="ezviz" />
-  </js-module>
+    <js-module src="www/ezviz.js" name="ezviz">
+        <clobbers target="ezviz" />
+    </js-module>
 
-  <platform name="android">
-    <preference name="APP_KEY"/>
-      <preference name="PKG_NAME" default="com.usky.smarthome" />
-    <config-file target="./res/values/strings.xml" parent="/resources">
-        <string name="appkey">$APP_KEY</string>
-    </config-file>
-    <config-file target="res/xml/config.xml" parent="/*">
-      <feature name="ezviz">
-        <param name="android-package" value="com.laitron.ezviz.ezviz"/>
+    <platform name="android">
+        <preference name="APP_KEY"/>
+        <preference name="PKG_NAME" default="com.usky.smarthome" />
+        <config-file target="./res/values/strings.xml" parent="/resources">
+            <string name="appkey">$APP_KEY</string>
+        </config-file>
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ezviz">
+                <param name="android-package" value="com.laitron.ezviz.ezviz"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+        
+        <uses-permission android:name="android.permission.INTERNET" />
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
+        <uses-permission android:name="android.permission.CAMERA"/>
+        <uses-permission android:name="android.permission.VIBRATE"/>
+        <uses-permission android:name="android.permission.FLASHLIGHT"/>
+        <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+        <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+        <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+        <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+        <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+        <uses-permission android:name="android.permission.READ_LOGS"/>
+        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+        <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+        <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
-      </feature>
+        <!-- zxing -->
+        <uses-permission android:name="android.permission.CAMERA"/>
 
-    </config-file>
-<config-file target="AndroidManifest.xml" parent="/*">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+        <uses-feature android:name="android.hardware.camera" android:required="false" />
+        <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
 
-    <!-- zxing -->
-    <uses-permission android:name="android.permission.CAMERA"/>
+        <uses-permission android:name="android.permission.VIBRATE"/>
+        <uses-permission android:name="android.permission.FLASHLIGHT"/>
 
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+        <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+        <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+        <!-- Keeps the processor from sleeping when a message is received. -->
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <!-- Keeps the processor from sleeping when a message is received. -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-
-    <permission
+        <permission
             android:name="$PKG_NAME.permission.C2D_MESSAGE"
             android:protectionLevel="signature"/>
-    <!-- This app has permission to register and receive data message. -->
-    <uses-permission android:name="$PKG_NAME.permission.RECEIVE"/>
-    <!-- Creates a custom permission so only this app can receive its messages. NOTE: APP_PACKAGE.permission.C2D_MESSAGE -->
-    <uses-permission android:name="$PKG_NAME.permission.C2D_MESSAGE"/>
+        <!-- This app has permission to register and receive data message. -->
+        <uses-permission android:name="$PKG_NAME.permission.RECEIVE"/>
+        <!-- Creates a custom permission so only this app can receive its messages. NOTE: APP_PACKAGE.permission.C2D_MESSAGE -->
+        <uses-permission android:name="$PKG_NAME.permission.C2D_MESSAGE"/>
 
-</config-file>
-<config-file target="AndroidManifest.xml" parent="/manifest/application">
-   <!--SDK4.2及之后需要在Mainfest.xml设置Accesskey，且必须正确设置，在application标签中加入-->
-   <meta-data android:name="com.videogo.ezviz.Accesskey" android:value="$APP_KEY" />
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!--SDK4.2及之后需要在Mainfest.xml设置Accesskey，且必须正确设置，在application标签中加入-->
+            <meta-data android:name="com.videogo.ezviz.Accesskey" android:value="$APP_KEY" />
 
-        <activity
-            android:name="com.videogo.main.EzvizWebViewActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"/>
-
-        <activity
-            android:name="com.videogo.remoteplayback.list.PlayBackListActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="nosensor"/>
-        <activity
-            android:name="com.videogo.ui.cameralist.EZCameraListActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.ui.realplay.EZRealPlayActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.ui.message.EZMessageImageActivity2"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name="com.videogo.ui.message.EZMessageActivity2"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name="com.videogo.ui.remoteplayback.EZRemotePlayBackActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.devicemgt.EZDeviceSettingActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name="com.videogo.devicemgt.ModifyDeviceNameActivity"
-            android:screenOrientation="portrait"/>
-
-
-        <activity
-            android:name="com.videogo.scan.main.CaptureActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.ui.devicelist.SeriesNumSearchActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name="com.videogo.ui.devicelist.AutoWifiNetConfigActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.ui.devicelist.AutoWifiConnectingActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.ui.devicelist.AutoWifiPrepareStepOneActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.videogo.ui.devicelist.AutoWifiResetActivity"
-            android:screenOrientation="portrait"/>
-
-
-
-        <activity android:name="com.videogo.test.InterfaceTestActivity">
-        </activity>
-        <activity android:name="com.videogo.test.InterfaceSelfTestActivity">
-        </activity>
-        <activity
-            android:name="com.videogo.devicemgt.EZUpgradeDeviceActivity"
-            android:label="@string/title_activity_ezupgrade_device">
-        </activity>
-</config-file>
-<framework src="src/android/build.gradle" custom="true" type="gradleReference" />
-    <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/ezviz/"/>
-    <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
-      <resource-file src="libs/android/ezvizsdk.aar" target="libs/ezvizsdk.aar" />
-      <!-- source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" / -->
-  </platform>
+            <activity
+                android:name="com.videogo.main.EzvizWebViewActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.remoteplayback.list.PlayBackListActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="nosensor"/>
+            <activity
+                android:name="com.videogo.ui.cameralist.EZCameraListActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.realplay.EZRealPlayActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.message.EZMessageImageActivity2"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.message.EZMessageActivity2"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.remoteplayback.EZRemotePlayBackActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.devicemgt.EZDeviceSettingActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.devicemgt.ModifyDeviceNameActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.scan.main.CaptureActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.devicelist.SeriesNumSearchActivity"
+                android:launchMode="singleTask"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustResize"/>
+            <activity
+                android:name="com.videogo.ui.devicelist.AutoWifiNetConfigActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.devicelist.AutoWifiConnectingActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.devicelist.AutoWifiPrepareStepOneActivity"
+                android:screenOrientation="portrait"/>
+            <activity
+                android:name="com.videogo.ui.devicelist.AutoWifiResetActivity"
+                android:screenOrientation="portrait"/>
+            <activity android:name="com.videogo.test.InterfaceTestActivity"/>
+            <activity android:name="com.videogo.test.InterfaceSelfTestActivity"/>
+            <activity
+                android:name="com.videogo.devicemgt.EZUpgradeDeviceActivity"
+                android:label="@string/title_activity_ezupgrade_device"/>
+        </config-file>
+        <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+        <source-file src="src/android/ezviz.java" target-dir="src/com/laitron/ezviz/"/>
+        <!-- framework src="ezsdk/android/build.gradle" custom="true" type="gradleReference" / -->
+        <resource-file src="libs/android/ezvizsdk.aar" target="libs/ezvizsdk.aar" />
+        <!-- source-file src="libs/EZOpenSDK.jar" target-dir="libs" framework="true" / -->
+    </platform>
 
     <!-- ios配置区域 -->
     <platform name="ios">
@@ -179,6 +164,9 @@
         </config-file>
         <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
             <string>需要使用手机相册</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryAddUsageDescription ">
+            <string>需要为您添加图片</string>
         </config-file>
         <!-- -->
         <config-file target="config.xml" parent="/*">
@@ -210,9 +198,4 @@
         <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="AddDevice.strings"/>
         <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="EZMain.strings"/>
     </platform>
-
-  <platform name="wp7">
-    <source-file src="src/wp7/Hello.cs"/>
-  </platform>
-
 </plugin>

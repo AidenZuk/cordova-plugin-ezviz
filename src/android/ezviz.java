@@ -137,7 +137,7 @@ public class ezviz extends CordovaPlugin {
             }
 
             Intent intent = new Intent(cordova.getActivity(), CaptureActivity.class);
-            startActivity(intent);
+            cordova.getActivity().startActivity(intent);
 
             callbackContext.success("");
             return true;
@@ -152,9 +152,9 @@ public class ezviz extends CordovaPlugin {
         initSDK();
 
         //注册广播接收器
-        localBroadcastManager = LocalBroadcastManager.getInstance(this) ;
-        broadcastReceiver = new MyBroadcastReceiver() ;
-        intentFilter = new IntentFilter( "completionButtonClicked") ;
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(super.webView.getContext()) ;
+        MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver() ;
+        IntentFilter intentFilter = new IntentFilter( "completionButtonClicked") ;
         localBroadcastManager.registerReceiver( broadcastReceiver , intentFilter );
     }
 
@@ -189,19 +189,18 @@ public class ezviz extends CordovaPlugin {
             String action = intent.getAction() ;
             if ( action.equals("completionButtonClicked") ){
 
-                final Intent intent = new Intent("completeDevice");
+                final Intent deviceIntent = new Intent("completeDevice");
 
                 Bundle b = new Bundle();
                 b.putString( "data", intent.getStringExtra( "data" ) );
-                intent.putExtras(b);
+                deviceIntent.putExtras(b);
 
-                LocalBroadcastManager.getInstance(this).sendBroadcastSync(intent);
+                LocalBroadcastManager.getInstance(super.webView.getContext()).sendBroadcastSync(deviceIntent);
 
-                Intent intent = new Intent(this, this.cordova.getActivity());
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent cordovaIntent = new Intent(super.webView.getContext());
+                cordovaIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(cordovaIntent);
                 finish();
-                Log.d( "tttt 消息：" + intent.getStringExtra( "data" )  , "线程： " + Thread.currentThread().getName() ) ;
             }
         }
     }

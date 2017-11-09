@@ -19,7 +19,7 @@
 {
     [super pluginInitialize];
     //sdk日志开关，正式发布需要去掉
-//    [EZOpenSDK setDebugLogEnable:YES];
+    [EZOpenSDK setDebugLogEnable:NO];
     //设置是否支持P2P取流,详见api
     [EZOpenSDK enableP2P:YES];
     //APP_KEY请替换成自己申请的
@@ -33,6 +33,7 @@
     }
     [EZOpenSDK initLibWithAppKey: appKey[0]];
     
+    //添加设备添加完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completionButtonClicked:) name:@"completionButtonClicked" object:nil];
 }
 
@@ -41,14 +42,19 @@
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
 
-    [self execCallback:msg command:command];
+    [self execCallback:msg status:CDVCommandStatus_OK command:command];
 }
 
 - (void) listCamera:(CDVInvokedUrlCommand*)command
 {
-    EZCameraTableViewController *ezCamera = [[UIStoryboard storyboardWithName:@"EZMain" bundle:nil] instantiateViewControllerWithIdentifier:@"EZCameraTableViewController"];
-    [self.viewController.navigationController pushViewController:ezCamera animated:true];
-    [self execCallback:@"" command:command];
+    UIStoryboard *EZMain = [self getStoryboard:@"EZMain"];
+    if (EZMain) {
+        EZCameraTableViewController *ezCamera = [EZMain instantiateViewControllerWithIdentifier:@"EZCameraTableViewController"];
+        [self.viewController.navigationController pushViewController:ezCamera animated:true];
+        [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
+        return;
+    }
+    [self execCallback:@"UIStoryboard EZMain is nil" status:CDVCommandStatus_ERROR command:command];
 }
 
 - (void) preview:(CDVInvokedUrlCommand*)command
@@ -65,20 +71,23 @@
         [EZOpenSDK setAccessToken:accessToken];
         [EZOpenSDK getDeviceInfo:deviceSerial completion: ^(EZDeviceInfo *deviceInfo, NSError *error) {
             if (error == NULL) {
-                EZLivePlayViewController *livePlay = [[UIStoryboard storyboardWithName:@"EZMain" bundle:nil] instantiateViewControllerWithIdentifier:@"EZLivePlayViewController"];
-                livePlay.delegate = self;
-                livePlay.deviceInfo = deviceInfo;
-                livePlay.cameraIndex = [camera_index intValue];
-                livePlay.eventName = (data.count >= 4) ? [data objectAtIndex:3] : @"";
-                livePlay.caption = (data.count >= 5) ? [data objectAtIndex:4] : @"";
-                livePlay.lightCaption = (data.count >= 6) ? [data objectAtIndex:5] : @"";
-
-                [self.viewController.navigationController pushViewController:livePlay animated:true];
-                [self execCallback:@"" command:command];
+                UIStoryboard *EZMain = [self getStoryboard:@"EZMain"];
+                if (EZMain) {
+                    EZLivePlayViewController *livePlay = [EZMain instantiateViewControllerWithIdentifier:@"EZLivePlayViewController"];
+                    livePlay.delegate = self;
+                    livePlay.deviceInfo = deviceInfo;
+                    livePlay.cameraIndex = [camera_index intValue];
+                    livePlay.eventName = [self contrastResult:(data.count >= 4) firstValue:[data objectAtIndex:3] secondValue:@""];
+                    livePlay.caption = [self contrastResult:(data.count >= 5) firstValue:[data objectAtIndex:4] secondValue:@""];
+                    livePlay.lightCaption = [self contrastResult:(data.count >= 6) firstValue:[data objectAtIndex:5] secondValue:@""];
+                    
+                    [self.viewController.navigationController pushViewController:livePlay animated:true];
+                    [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
+                    return;
+                }
+                [self execCallback:@"UIStoryboard EZMain is nil" status:CDVCommandStatus_ERROR command:command];
             }else{
-                CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: @"没有找到摄像头信息"];
-                [self.commandDelegate sendPluginResult:pluginResult
-                                            callbackId:command.callbackId];
+                [self execCallback:@"no camera info" status:CDVCommandStatus_ERROR command:command];
             }
         }];
     }
@@ -87,9 +96,9 @@
 - (void) init:(CDVInvokedUrlCommand*)command
 {
     NSString* accessToken = [[command arguments] objectAtIndex:0];
-    //    NSString* telNo = [[command arguments] objectAtIndex:1];
     [EZOpenSDK setAccessToken:accessToken];
-    [self execCallback:@"" command:command];
+    
+    [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
 }
 
 - (void) openAddDevice:(CDVInvokedUrlCommand*)command
@@ -99,18 +108,41 @@
     
     [EZOpenSDK setAccessToken:accessToken];
     
-    EZAddByQRCodeViewController *addByQRCode = [[UIStoryboard storyboardWithName:@"AddDevice" bundle:nil] instantiateViewControllerWithIdentifier:@"AddByQRCode"];
-    UIBarButtonItem *returnButton = [[UIBarButtonItem alloc] init];
-    returnButton.title = @"";
-    self.viewController.navigationItem.backBarButtonItem = returnButton;
-    [self.viewController.navigationController pushViewController:addByQRCode animated:true];
-    [self execCallback:@"" command:command];
+    UIStoryboard *AddDevice = [self getStoryboard:@"AddDevice"];
+    if (AddDevice) {
+        EZAddByQRCodeViewController *addByQRCode = [AddDevice instantiateViewControllerWithIdentifier:@"AddByQRCode"];
+        UIBarButtonItem *returnButton = [[UIBarButtonItem alloc] init];
+        returnButton.title = @"";
+        self.viewController.navigationItem.backBarButtonItem = returnButton;
+        [self.viewController.navigationController pushViewController:addByQRCode animated:true];
+        [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
+        return;
+    }
+    [self execCallback:@"UIStoryboard AddDevice is nil" status:CDVCommandStatus_ERROR command:command];
 }
 
-- (void) execCallback:(NSString *)msg command:(CDVInvokedUrlCommand*)command
+- (NSString *) contrastResult:(BOOL)condition firstValue:(NSString *)firstValue secondValue: (NSString *)secondValue
+{
+    if (condition) {
+        return firstValue;
+    }else {
+        return secondValue;
+    }
+}
+
+- (UIStoryboard *) getStoryboard: (NSString *)name
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:name bundle:nil];
+    if (storyboard) {
+        return storyboard;
+    }
+    return nil;
+}
+
+- (void) execCallback:(NSString *)msg status:(CDVCommandStatus)status command:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* result = [CDVPluginResult
-                               resultWithStatus:CDVCommandStatus_OK
+                               resultWithStatus:status
                                messageAsString:msg];
 
     [self.commandDelegate sendPluginResult:result
@@ -164,6 +196,8 @@
                     break;
                 }
             }
+        }else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"completeDevice" object:nil userInfo:@{@"error": @"no cameraInfo"}];
         }
     }];
 }
