@@ -32,7 +32,7 @@
         }
     }
     [EZOpenSDK initLibWithAppKey: appKey[0]];
-    
+
     //添加设备添加完成通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completionButtonClicked:) name:@"completionButtonClicked" object:nil];
 }
@@ -63,7 +63,7 @@
     NSString* accessToken = [data objectAtIndex:0];
     NSString* deviceSerial = [data objectAtIndex:1];
     NSString* camera_index = [data objectAtIndex:2];
-    
+
     [[NSUserDefaults standardUserDefaults] setObject:accessToken?:@"" forKey:@"EZOpenSDKAccessToken"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -80,7 +80,7 @@
                     livePlay.eventName = [self contrastResult:(data.count >= 4) firstValue:[data objectAtIndex:3] secondValue:@""];
                     livePlay.caption = [self contrastResult:(data.count >= 5) firstValue:[data objectAtIndex:4] secondValue:@""];
                     livePlay.lightCaption = [self contrastResult:(data.count >= 6) firstValue:[data objectAtIndex:5] secondValue:@""];
-                    
+
                     [self.viewController.navigationController pushViewController:livePlay animated:true];
                     [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
                     return;
@@ -97,7 +97,7 @@
 {
     NSString* accessToken = [[command arguments] objectAtIndex:0];
     [EZOpenSDK setAccessToken:accessToken];
-    
+
     [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
 }
 
@@ -105,9 +105,9 @@
 {
     NSArray* data = [command arguments];
     NSString* accessToken = [data objectAtIndex:0];
-    
+
     [EZOpenSDK setAccessToken:accessToken];
-    
+
     UIStoryboard *AddDevice = [self getStoryboard:@"AddDevice"];
     if (AddDevice) {
         EZAddByQRCodeViewController *addByQRCode = [AddDevice instantiateViewControllerWithIdentifier:@"AddByQRCode"];
@@ -119,6 +119,26 @@
         return;
     }
     [self execCallback:@"UIStoryboard AddDevice is nil" status:CDVCommandStatus_ERROR command:command];
+}
+
+- (void) deleteDevice:(CDVInvokedUrlCommand*)command
+{
+    NSArray* data = [command arguments];
+    NSString* accessToken = [data objectAtIndex:0];
+    NSString* deviceSerial = [data objectAtIndex:1];
+
+    [EZOpenSDK setAccessToken:accessToken];
+
+    [EZOpenSDK deleteDevice:deviceSerial completion:^(NSError *error) {
+        NSLog(@"error is %@",error);
+        if (!error) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"deleteDevice" object:nil userInfo:@{@"code": @(0)}];
+        }else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"deleteDevice" object:nil userInfo:@{@"code": @(error.code)}];
+        }
+        [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
+    }];
+    [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
 }
 
 - (NSString *) contrastResult:(BOOL)condition firstValue:(NSString *)firstValue secondValue: (NSString *)secondValue
