@@ -37,12 +37,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(completionButtonClicked:) name:@"completionButtonClicked" object:nil];
 }
 
-- (void)greet:(CDVInvokedUrlCommand*)command
+- (void) init:(CDVInvokedUrlCommand*)command
 {
-    NSString* name = [[command arguments] objectAtIndex:0];
-    NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
+    NSString* accessToken = [[command arguments] objectAtIndex:0];
+    [EZOpenSDK setAccessToken:accessToken];
 
-    [self execCallback:msg status:CDVCommandStatus_OK command:command];
+    [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
 }
 
 - (void) listCamera:(CDVInvokedUrlCommand*)command
@@ -93,14 +93,6 @@
     }
 }
 
-- (void) init:(CDVInvokedUrlCommand*)command
-{
-    NSString* accessToken = [[command arguments] objectAtIndex:0];
-    [EZOpenSDK setAccessToken:accessToken];
-
-    [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
-}
-
 - (void) openAddDevice:(CDVInvokedUrlCommand*)command
 {
     NSArray* data = [command arguments];
@@ -140,6 +132,8 @@
     }];
     [self execCallback:@"success" status:CDVCommandStatus_OK command:command];
 }
+
+//---------------------------------------分割线----------------------------------------//
 
 - (NSString *) contrastResult:(BOOL)condition firstValue:(NSString *)firstValue secondValue: (NSString *)secondValue
 {

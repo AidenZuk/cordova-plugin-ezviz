@@ -11,14 +11,15 @@
 
 @interface Ezviz : CDVPlugin
 
-- (void) greet:(CDVInvokedUrlCommand*)command;
+- (void) init:(CDVInvokedUrlCommand*)command;
 - (void) listCamera:(CDVInvokedUrlCommand*)command;
 - (void) preview:(CDVInvokedUrlCommand*)command;
-- (void) init:(CDVInvokedUrlCommand*)command;
 - (void) openAddDevice:(CDVInvokedUrlCommand*)command;
+- (void) deleteDevice:(CDVInvokedUrlCommand*)command;
 
 @property (nonatomic, strong) NSString *accessToken;
 @property (nonatomic, strong) NSString *telNo;
 @property (nonatomic, strong) NSString *eventName;
+@property (nonatomic, strong) NSString *deviceSerial;
 
 @end

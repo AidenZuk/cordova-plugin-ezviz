@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 
 import org.apache.cordova.*;
@@ -45,11 +46,14 @@ public class ezviz extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
-        if (action.equals("greet")) {
-            String name = data.getString(0);
-            String message = "Hello, " + name;
+        if(action.equals("init") || action.equals("setAccesstoken")){
+            accessToken=data.getString(0);
 
-            callbackContext.success(message);
+            if(!accessToken.equals("")) {
+                EZOpenSDK.getInstance().setAccessToken(accessToken);
+            }
+
+            callbackContext.success("");
             return true;
         } else if(action.equals("listCamera")){
             Intent toIntent = new Intent(cordova.getActivity(), EZCameraListActivity.class);
@@ -123,13 +127,6 @@ public class ezviz extends CordovaPlugin {
                 return false;
             }
 
-        }else if(action.equals("init") || action.equals("setAccesstoken")){
-            accessToken=data.getString(0);
-            telNo = data.getString(1);
-            EZOpenSDK.getInstance().setAccessToken(accessToken);
-
-            callbackContext.success("");
-            return true;
         }else if(action.equals("openAddDevice")) { //添加设备
             String accessToken = data.getString(0);
             if(!accessToken.equals("")) {
@@ -139,6 +136,17 @@ public class ezviz extends CordovaPlugin {
             Intent intent = new Intent(cordova.getActivity(), CaptureActivity.class);
             cordova.getActivity().startActivity(intent);
 
+            callbackContext.success("");
+            return true;
+        }else if (action.equals("deleteDevice")) { //删除设备
+            String accessToken = data.getString(0);
+            String deviceSerial = data.getString(1);
+
+            if(!accessToken.equals("")) {
+                EZOpenSDK.getInstance().setAccessToken(accessToken);
+            }
+
+            new DeleteDeviceTask().execute(deviceSerial);
             callbackContext.success("");
             return true;
         }else {
@@ -202,6 +210,42 @@ public class ezviz extends CordovaPlugin {
                 startActivity(cordovaIntent);
                 finish();
             }
+        }
+    }
+
+    /**
+     * 删除设备任务
+     */
+    private class DeleteDeviceTask extends AsyncTask<Void, Void, Boolean> {
+
+        private int mErrorCode = 0;
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            String deviceSerial = params[0];
+            Boolean result = false;
+            try {
+                result = EZOpenSDK.getInstance().deleteDevice(deviceSerial);
+            } catch (BaseException e) {
+                ErrorInfo errorInfo = (ErrorInfo) e.getObject();
+                mErrorCode = errorInfo.errorCode;
+
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+
+            final Intent intent = new Intent("deleteDevice");
+
+            Bundle b = new Bundle();
+            b.putString( "code", mErrorCode);
+            intent.putExtras(b);
+
+            LocalBroadcastManager.getInstance(super.webView.getContext()).sendBroadcastSync(intent);
         }
     }
 }

@@ -192,10 +192,5 @@
         <framework src="MobileCoreServices.framework" />
         <framework src="SystemConfiguration.framework" />
         <framework src="libs/ios/EZDemoSDK.framework" custom="true"/>
-        <resource-file src="libs/ios/EZDemoSDK.framework/Base.lproj" target="AddDevice.storyboardc" />
-        <resource-file src="libs/ios/EZDemoSDK.framework/Base.lproj" target="EZMain.storyboardc"/>
-        <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="Localizable.strings"/>
-        <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="AddDevice.strings"/>
-        <resource-file src="libs/ios/EZDemoSDK.framework/zh-Hans.lproj" target="EZMain.strings"/>
     </platform>
 </plugin>
