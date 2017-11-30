@@ -1,6 +1,8 @@
 package com.laitron.ezviz;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
@@ -19,6 +21,7 @@ import com.videogo.exception.BaseException;
 import com.videogo.exception.InnerException;
 import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.ui.cameralist.EZCameraListActivity;
+import com.videogo.ui.devicelist.AutoWifiConnectingActivity;
 import com.videogo.ui.realplay.EZRealPlayActivity;
 import com.videogo.ui.devicelist.AutoWifiNetConfigActivity;
 import com.videogo.scan.main.CaptureActivity;
@@ -146,7 +149,7 @@ public class ezviz extends CordovaPlugin {
                 EZOpenSDK.getInstance().setAccessToken(accessToken);
             }
 
-            new DeleteDeviceTask().execute(deviceSerial);
+            new DeleteDeviceTask(deviceSerial).execute();
             callbackContext.success("");
             return true;
         }else {
@@ -158,12 +161,6 @@ public class ezviz extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         initSDK();
-
-        //注册广播接收器
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(super.webView.getContext()) ;
-        MyBroadcastReceiver broadcastReceiver = new MyBroadcastReceiver() ;
-        IntentFilter intentFilter = new IntentFilter( "completionButtonClicked") ;
-        localBroadcastManager.registerReceiver( broadcastReceiver , intentFilter );
     }
 
     /**
@@ -188,41 +185,19 @@ public class ezviz extends CordovaPlugin {
     }
 
     /**
-     * 监听通知
-     */
-    private class MyBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction() ;
-            if ( action.equals("completionButtonClicked") ){
-
-                final Intent deviceIntent = new Intent("completeDevice");
-
-                Bundle b = new Bundle();
-                b.putString( "data", intent.getStringExtra( "data" ) );
-                deviceIntent.putExtras(b);
-
-                LocalBroadcastManager.getInstance(super.webView.getContext()).sendBroadcastSync(deviceIntent);
-
-                Intent cordovaIntent = new Intent(super.webView.getContext());
-                cordovaIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(cordovaIntent);
-                finish();
-            }
-        }
-    }
-
-    /**
      * 删除设备任务
      */
     private class DeleteDeviceTask extends AsyncTask<Void, Void, Boolean> {
 
         private int mErrorCode = 0;
+        private String deviceSerial = "";
+
+        DeleteDeviceTask(String deviceSerial) {
+            this.deviceSerial = deviceSerial;
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            String deviceSerial = params[0];
             Boolean result = false;
             try {
                 result = EZOpenSDK.getInstance().deleteDevice(deviceSerial);
@@ -242,10 +217,10 @@ public class ezviz extends CordovaPlugin {
             final Intent intent = new Intent("deleteDevice");
 
             Bundle b = new Bundle();
-            b.putString( "code", mErrorCode);
+            b.putString( "userdata", "{ \"code\": \""+mErrorCode+"\"}" );
             intent.putExtras(b);
 
-            LocalBroadcastManager.getInstance(super.webView.getContext()).sendBroadcastSync(intent);
+            LocalBroadcastManager.getInstance(cordova.getActivity()).sendBroadcastSync(intent);
         }
     }
 }
